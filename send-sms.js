@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         自定义脚本按钮
+// @name         宏远强国一键发送短信提醒客户
 // @namespace    https://yz.mba
-// @version      1.0
-// @description  在页面上添加一个发送按钮，点击时执行你的代码
+// @version      1.1
+// @description  发送续费提醒
 // @author       永至网络科技工作室
-// @match        https://aj.2123451.xyz/NEwBoxpilj.php/account/account?ref=addtabs  // 替换成你要运行脚本的网页地址
+// @match        https://aj.2123451.xyz/NEwBoxpilj.php/account/*
 // @grant        none
 // ==/UserScript==
 
