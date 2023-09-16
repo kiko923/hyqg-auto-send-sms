@@ -59,6 +59,7 @@
         button.style.verticalAlign = 'middle'; // 垂直居中对齐
         button.style.display = 'inline-block'; // 水平对齐
         button.style.textAlign = 'center'; // 文本居中对齐
+        button.style.marginTop = '3px'; // 在文本顶部添加10像素的外边距，可以根据需要调整此值
 
         // // 将标题、输入框和按钮添加到容器中
         container.appendChild(label);
