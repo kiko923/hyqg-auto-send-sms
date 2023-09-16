@@ -33,7 +33,7 @@
 
         // // 输入框后面的标题元素
         var label2 = document.createElement('label');
-        label2.textContent = '天内到期用户'; // 标题文本
+        label2.textContent = '天内到期'; // 标题文本
         label2.style.fontSize = '15px'; // 设置文本大小为15像素
         label2.style.marginTop = '5px'; // 在文本顶部添加10像素的外边距，可以根据需要调整此值
         label2.style.marginRight = '3px'; // 右外边距
