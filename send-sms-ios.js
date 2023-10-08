@@ -61,11 +61,23 @@
         button.style.textAlign = 'center'; // 文本居中对齐
         button.style.marginTop = '3px'; // 在文本顶部添加10像素的外边距，可以根据需要调整此值
 
+        // 创建一个新按钮元素
+        var manualReminderButton = document.createElement('a');
+        manualReminderButton.href = 'https://code.lau.plus/send.php'; // 设置跳转链接为 https://code.lau.plus/send.php
+        manualReminderButton.className = 'btn btn-secondary btn-custom'; // 自定义按钮的类名
+        manualReminderButton.title = '手动提醒'; // 自定义按钮的标题
+        manualReminderButton.innerHTML = '手动提醒'; // 自定义按钮的内容
+        manualReminderButton.style.verticalAlign = 'middle'; // 垂直居中对齐
+        manualReminderButton.style.display = 'inline-block'; // 水平对齐
+        manualReminderButton.style.textAlign = 'center'; // 文本居中对齐
+
         // // 将标题、输入框和按钮添加到容器中
         container.appendChild(label);
         container.appendChild(inputDays);
         container.appendChild(label2); // 添加在输入框后面
         container.appendChild(button);
+        // 将 "手动提醒" 按钮添加到容器中
+        container.appendChild(manualReminderButton);
 
         // // 在 "欠费转正常" 按钮后面插入容器
         normalButton.parentNode.insertBefore(container, normalButton.nextSibling);
