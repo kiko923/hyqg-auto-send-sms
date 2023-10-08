@@ -1,15 +1,6 @@
 // ==UserScript==
 // @name         宏远强国一键发送短信提醒客户ios版
 // @namespace    https://yz.mba
-// @version      1.2
-// @description  发送续费提醒
-// @author       永至网络科技工作室
-// @match        https://aj.2123451.xyz/NEwBoxpilj.php/*
-// @grant        none
-// @run-at       document-end
-// ==UserScript==
-// @name         宏远强国一键发送短信提醒客户ios版
-// @namespace    https://yz.mba
 // @version      1.0
 // @description  发送续费提醒
 // @author       永至网络科技工作室
