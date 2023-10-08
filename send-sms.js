@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         宏远强国一键发送短信提醒客户
 // @namespace    https://yz.mba
-// @version      1.1
+// @version      1.2
 // @description  发送续费提醒
 // @author       永至网络科技工作室
 // @match        https://aj.2123451.xyz/NEwBoxpilj.php/account/*
@@ -57,12 +57,25 @@ label2.style.marginRight = '3px'; // 右外边距
     button.style.verticalAlign = 'middle'; // 垂直居中对齐
     button.style.display = 'inline-block'; // 水平对齐
     button.style.textAlign = 'center'; // 文本居中对齐
+    button.style.marginRight = '5px'; // 右外边距
+
+// 创建一个新按钮元素
+var manualReminderButton = document.createElement('a');
+manualReminderButton.href = 'https://code.lau.plus/send.php'; // 设置跳转链接为 https://code.lau.plus/send.php
+manualReminderButton.className = 'btn btn-primary btn-custom'; // 使用与原按钮相同的类名
+manualReminderButton.title = '手动提醒'; // 自定义按钮的标题
+manualReminderButton.innerHTML = '手动提醒'; // 自定义按钮的内容
+manualReminderButton.style.verticalAlign = 'middle'; // 垂直居中对齐
+manualReminderButton.style.display = 'inline-block'; // 水平对齐
+manualReminderButton.style.textAlign = 'center'; // 文本居中对齐
+
 
     // 将标题、输入框和按钮添加到容器中
     container.appendChild(label);
     container.appendChild(inputDays);
    container.appendChild(label2); // 添加在输入框后面
     container.appendChild(button);
+        container.appendChild(manualReminderButton);
 
     // 在 "欠费转正常" 按钮后面插入容器
     normalButton.parentNode.insertBefore(container, normalButton.nextSibling);
