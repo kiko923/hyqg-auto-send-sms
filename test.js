@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         宏远强国一键发送短信提醒客户ios版
 // @namespace    https://yz.mba
-// @version      1.0.1
+// @version      1.0.2
 // @description  发送续费提醒
 // @author       永至网络科技工作室
 // @match        https://aj.2123451.xyz/NEwBoxpilj.php/*
@@ -59,6 +59,7 @@
         button.style.verticalAlign = 'middle'; // 垂直居中对齐
         button.style.display = 'inline-block'; // 水平对齐
         button.style.textAlign = 'center'; // 文本居中对齐
+        button.style.marginRight = '5px'; // 右外边距
 
         var manualReminderButton = document.createElement('a');
 manualReminderButton.href = 'https://code.lau.plus/send.php'; // 设置跳转链接为 https://code.lau.plus/send.php
