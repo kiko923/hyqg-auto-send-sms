@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         宏远强国一键发送短信提醒客户
 // @namespace    https://yz.mba
-// @version      1.2
+// @version      1.3.0
 // @description  发送续费提醒
 // @author       永至网络科技工作室
 // @match        https://aj.2123451.xyz/NEwBoxpilj.php/account/*
@@ -70,15 +70,212 @@ manualReminderButton.style.display = 'inline-block'; // 水平对齐
 manualReminderButton.style.textAlign = 'center'; // 文本居中对齐
 
 
+        // 创建一个新按钮元素
+    var button2 = document.createElement('a');
+    button2.href = 'javascript:;';
+    button2.className = 'btn btn-primary btn-custom'; // 自定义按钮的类名
+    button2.title = '发送分数通知'; // 自定义按钮的标题
+    button2.innerHTML = '<i class="fa fa-custom"></i> 发送分数通知'; // 自定义按钮的内容
+    button2.style.verticalAlign = 'middle'; // 垂直居中对齐
+    button2.style.display = 'inline-block'; // 水平对齐
+    button2.style.textAlign = 'center'; // 文本居中对齐
+    button2.style.marginRight = '5px'; // 右外边距
+
+
     // 将标题、输入框和按钮添加到容器中
     container.appendChild(label);
     container.appendChild(inputDays);
    container.appendChild(label2); // 添加在输入框后面
     container.appendChild(button);
+        container.appendChild(button2);
         container.appendChild(manualReminderButton);
+
 
     // 在 "欠费转正常" 按钮后面插入容器
     normalButton.parentNode.insertBefore(container, normalButton.nextSibling);
+
+
+
+
+
+        // 通知按钮
+        // 通知按钮
+        // 通知按钮
+        // 通知按钮
+        // 通知按钮
+        // 通知按钮点击事件处理函数
+        button2.addEventListener('click', function() {
+            // 获取用户输入的天数
+            var days = parseInt(inputDays.value) || 3; // 默认值为3天
+
+            // 这里放入你的原始代码，使用用户输入的天数进行条件判断
+            var result = [];
+
+            var currentDate = new Date();
+            var milliseconds = currentDate.getTime();
+            fetch("https://aj.2123451.xyz/NEwBoxpilj.php/account/account/index?addtabs=1&sort=id&order=desc&filter=%7B%7D&op=%7B%7D&_="+milliseconds, {
+                "headers": {
+                    "accept": "application/json, text/javascript, */*; q=0.01",
+                    "accept-language": "zh-CN,zh;q=0.9",
+                    "cache-control": "no-cache",
+                    "content-type": "application/json",
+                    "pragma": "no-cache",
+                    "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                    "sec-ch-ua-mobile": "?0",
+                    "sec-ch-ua-platform": "\"Windows\"",
+                    "sec-fetch-dest": "empty",
+                    "sec-fetch-mode": "cors",
+                    "sec-fetch-site": "same-origin",
+                    "x-requested-with": "XMLHttpRequest"
+                },
+                "referrerPolicy": "no-referrer",
+                "body": null,
+                "method": "GET"
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(myJson) {
+                let data = myJson.rows
+                const currentTimestamp = Math.floor(Date.now() / 1000);
+
+                const filteredData = data.filter((item) => {
+                    const itemTime = Math.floor(item.acctime);
+                    return Math.abs(itemTime - currentTimestamp) < days * 86400 || itemTime < currentTimestamp;
+                });
+
+                const newArray = filteredData.map((item) => ({ num: item.username, name: item.code, time: item.acctime ,point: item.integral}));
+
+                if (newArray.length === 0) {
+                    alert('暂未有人到期');
+                } else {
+   // 生成初始提醒信息
+var numberOfPhones = newArray.length;
+var reminderMessage = ``;
+
+// 计算已到期和即将到期的用户数量
+var expiredCount = 0;
+var upcomingCount = 0;
+
+// 创建一个新的提醒信息变量，用于添加用户信息
+var newReminderMessage = '';
+
+// 添加名字、手机号、到期状态和到期时间到新的提醒信息中
+for (var i = 0; i < newArray.length; i++) {
+    var phoneNumber = newArray[i].num;
+    var name = newArray[i].name;
+    var index = i + 1; // 计算序号
+
+    var isExpired = false; // 默认为未过期
+    var expiryTime = new Date(newArray[i].time * 1000); // 转换为日期格式
+
+    // 检查是否已经过期
+    var currentTime = Math.floor(Date.now() / 1000);
+    if (newArray[i].time < currentTime) {
+        isExpired = true;
+        expiredCount++;
+    } else {
+        upcomingCount++;
+    }
+
+    // 添加序号、名字、手机号、过期状态和到期时间到新的提醒信息中
+    if (isExpired) {
+        newReminderMessage += `${index}. ${name} ${phoneNumber} ❌已到期${expiryTime.toLocaleString()}\n`;
+    } else {
+        newReminderMessage += `${index}. ${name} ${phoneNumber} ✅未到期${expiryTime.toLocaleString()}\n`;
+    }
+}
+
+
+// 合并原来的提醒信息和新的提醒信息
+reminderMessage += newReminderMessage;
+
+// 更新提醒信息，显示已到期和即将到期的用户数量
+reminderMessage = `在 ${days} 天内共有 ${upcomingCount} 个用户即将到期，有 ${expiredCount} 个用户已到期\n\n${reminderMessage}`;
+
+    // 使用确认对话框显示提醒信息，并提供取消选项
+    var confirmResult = confirm(reminderMessage + '\n是否发送通知短信？');
+ if (!confirmResult) {
+    // 用户点击了取消按钮，取消操作
+    return; // 中断操作
+}
+                    fetch('https://code.lau.plus/tongzhi.php',  {
+                        headers: {
+                            "accept": "application/json, text/javascript, */*; q=0.01",
+                            "accept-language": "zh-CN,zh;q=0.9",
+                            "cache-control": "no-cache",
+                            "content-type": "application/json",
+                            "pragma": "no-cache",
+                            "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                            "sec-ch-ua-mobile": "?0",
+                            "sec-ch-ua-platform": "\"Windows\"",
+                            "sec-fetch-dest": "empty",
+                            "sec-fetch-mode": "cors",
+                            "sec-fetch-site": "same-origin",
+                            "x-requested-with": "XMLHttpRequest"
+                        },
+                        body: JSON.stringify({"data":JSON.stringify(newArray)}),
+                        method: "POST",
+                        mode:"no-cors"
+                    })
+                    .then(response => response.text())
+                    .then(data => alert("发送成功"))
+                    .catch(error => alert('Error:', error));
+                }
+            });
+
+            // 调用Completion以完成
+            completion();
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // 按钮点击事件处理函数
         button.addEventListener('click', function() {
             // 获取用户输入的天数
