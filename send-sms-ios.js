@@ -64,7 +64,7 @@
 
 
         // // 创建一个新按钮元素
-        var button = document.createElement('a');
+        var button2 = document.createElement('a');
         button2.href = 'javascript:;';
         button2.className = 'btn btn-primary btn-custom'; // 自定义按钮的类名
         button2.title = '发送分数通知'; // 自定义按钮的标题
