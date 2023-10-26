@@ -88,6 +88,7 @@ manualReminderButton.style.textAlign = 'center'; // 文本居中对齐
         container.appendChild(inputDays);
         container.appendChild(label2); // 添加在输入框后面
         container.appendChild(button);
+        container.appendChild(button2);
         container.appendChild(manualReminderButton);
 
         // // 在 "欠费转正常" 按钮后面插入容器
