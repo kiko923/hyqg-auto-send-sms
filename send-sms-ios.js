@@ -15,7 +15,7 @@
     // 找到 "欠费转正常" 按钮元素
     var iframe = document.getElementsByTagName('iframe')[1];
     var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    var normalButton = iframeDoc.querySelector('.btn-opera-sen-code');
+    var normalButton = iframeDoc.querySelector('.btn-opera-send-code');
     if (normalButton) {
         // // 创建一个包含标题、输入框和按钮的容器
         var container = document.createElement('div');
