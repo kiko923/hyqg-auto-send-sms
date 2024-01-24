@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         宏远强国一键发送短信提醒客户ios版
 // @namespace    https://yz.mba
-// @version      1.0.4
+// @version      1.0.5
 // @description  发送续费提醒
 // @author       永至网络科技工作室
 // @match        https://aj.2123451.xyz/NEwBoxpilj.php/*
@@ -15,7 +15,7 @@
     // 找到 "欠费转正常" 按钮元素
     var iframe = document.getElementsByTagName('iframe')[1];
     var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    var normalButton = iframeDoc.querySelector('.btn-opera');
+    var normalButton = iframeDoc.querySelector('.btn-opera-sen-code');
     if (normalButton) {
         // // 创建一个包含标题、输入框和按钮的容器
         var container = document.createElement('div');
