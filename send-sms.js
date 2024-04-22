@@ -1,11 +1,13 @@
 // ==UserScript==
 // @name         宏远强国一键发送短信提醒客户
 // @namespace    https://yz.mba
-// @version      1.5
+// @version      1.6
 // @description  发送续费提醒
 // @author       永至网络科技工作室
 // @match        https://aj.2123451.xyz/NEwBoxpilj.php/account/*
 // @grant        none
+// @downloadURL https://update.greasyfork.org/scripts/475372/%E5%AE%8F%E8%BF%9C%E5%BC%BA%E5%9B%BD%E4%B8%80%E9%94%AE%E5%8F%91%E9%80%81%E7%9F%AD%E4%BF%A1%E6%8F%90%E9%86%92%E5%AE%A2%E6%88%B7.user.js
+// @updateURL https://update.greasyfork.org/scripts/475372/%E5%AE%8F%E8%BF%9C%E5%BC%BA%E5%9B%BD%E4%B8%80%E9%94%AE%E5%8F%91%E9%80%81%E7%9F%AD%E4%BF%A1%E6%8F%90%E9%86%92%E5%AE%A2%E6%88%B7.meta.js
 // ==/UserScript==
 
 (function() {
@@ -82,12 +84,25 @@ manualReminderButton.style.textAlign = 'center'; // 文本居中对齐
     button2.style.marginRight = '5px'; // 右外边距
 
 
+
+             // 创建一个新按钮元素
+    var button3 = document.createElement('a');
+    button3.href = 'javascript:;';
+    button3.className = 'btn btn-primary btn-custom'; // 自定义按钮的类名
+    button3.title = '故障通知'; // 自定义按钮的标题
+    button3.innerHTML = '<i class="fa fa-custom"></i> 故障通知'; // 自定义按钮的内容
+    button3.style.verticalAlign = 'middle'; // 垂直居中对齐
+    button3.style.display = 'inline-block'; // 水平对齐
+    button3.style.textAlign = 'center'; // 文本居中对齐
+    button3.style.marginRight = '5px'; // 右外边距
+
     // 将标题、输入框和按钮添加到容器中
     container.appendChild(label);
     container.appendChild(inputDays);
    container.appendChild(label2); // 添加在输入框后面
     container.appendChild(button);
         container.appendChild(button2);
+        container.appendChild(button3);
         container.appendChild(manualReminderButton);
 
 
@@ -243,7 +258,129 @@ reminderMessage = `在 ${days} 天内共有 ${upcomingCount} 个用户即将到�
 
 
 
+ button3.addEventListener('click', function() {
+            // 获取用户输入的天数
+            var days = parseInt(inputDays.value) || 3; // 默认值为3天
 
+            // 这里放入你的原始代码，使用用户输入的天数进行条件判断
+            var result = [];
+
+            var currentDate = new Date();
+            var milliseconds = currentDate.getTime();
+            fetch("https://aj.2123451.xyz/NEwBoxpilj.php/account/account/index?addtabs=1&sort=id&order=desc&filter=%7B%7D&op=%7B%7D&_="+milliseconds, {
+                "headers": {
+                    "accept": "application/json, text/javascript, */*; q=0.01",
+                    "accept-language": "zh-CN,zh;q=0.9",
+                    "cache-control": "no-cache",
+                    "content-type": "application/json",
+                    "pragma": "no-cache",
+                    "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                    "sec-ch-ua-mobile": "?0",
+                    "sec-ch-ua-platform": "\"Windows\"",
+                    "sec-fetch-dest": "empty",
+                    "sec-fetch-mode": "cors",
+                    "sec-fetch-site": "same-origin",
+                    "x-requested-with": "XMLHttpRequest"
+                },
+                "referrerPolicy": "no-referrer",
+                "body": null,
+                "method": "GET"
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(myJson) {
+                let data = myJson.rows
+                const currentTimestamp = Math.floor(Date.now() / 1000);
+
+                const filteredData = data.filter((item) => {
+                    const itemTime = Math.floor(item.acctime);
+                    return Math.abs(itemTime - currentTimestamp) < days * 86400 || itemTime < currentTimestamp;
+                });
+
+                const newArray = filteredData.map((item) => ({ num: item.username, name: item.code, time: item.acctime ,point: item.integral}));
+
+                if (newArray.length === 0) {
+                    alert('暂未有人到期');
+                } else {
+   // 生成初始提醒信息
+var numberOfPhones = newArray.length;
+var reminderMessage = ``;
+
+// 计算已到期和即将到期的用户数量
+var expiredCount = 0;
+var upcomingCount = 0;
+
+// 创建一个新的提醒信息变量，用于添加用户信息
+var newReminderMessage = '';
+
+// 添加名字、手机号、到期状态和到期时间到新的提醒信息中
+for (var i = 0; i < newArray.length; i++) {
+    var phoneNumber = newArray[i].num;
+    var name = newArray[i].name;
+    var index = i + 1; // 计算序号
+
+    var isExpired = false; // 默认为未过期
+    var expiryTime = new Date(newArray[i].time * 1000); // 转换为日期格式
+
+    // 检查是否已经过期
+    var currentTime = Math.floor(Date.now() / 1000);
+    if (newArray[i].time < currentTime) {
+        isExpired = true;
+        expiredCount++;
+    } else {
+        upcomingCount++;
+    }
+
+    // 添加序号、名字、手机号、过期状态和到期时间到新的提醒信息中
+    if (isExpired) {
+        newReminderMessage += `${index}. ${name} ${phoneNumber} ❌已到期${expiryTime.toLocaleString()}\n`;
+    } else {
+        newReminderMessage += `${index}. ${name} ${phoneNumber} ✅未到期${expiryTime.toLocaleString()}\n`;
+    }
+}
+
+
+// 合并原来的提醒信息和新的提醒信息
+reminderMessage += newReminderMessage;
+
+// 更新提醒信息，显示已到期和即将到期的用户数量
+reminderMessage = `在 ${days} 天内共有 ${upcomingCount} 个用户即将到期，有 ${expiredCount} 个用户已到期\n\n${reminderMessage}`;
+
+    // 使用确认对话框显示提醒信息，并提供取消选项
+    var confirmResult = confirm(reminderMessage + '\n是否发送通知短信？');
+ if (!confirmResult) {
+    // 用户点击了取消按钮，取消操作
+    return; // 中断操作
+}
+                    fetch('https://code.lau.plus/guzhang.php',  {
+                        headers: {
+                            "accept": "application/json, text/javascript, */*; q=0.01",
+                            "accept-language": "zh-CN,zh;q=0.9",
+                            "cache-control": "no-cache",
+                            "content-type": "application/json",
+                            "pragma": "no-cache",
+                            "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                            "sec-ch-ua-mobile": "?0",
+                            "sec-ch-ua-platform": "\"Windows\"",
+                            "sec-fetch-dest": "empty",
+                            "sec-fetch-mode": "cors",
+                            "sec-fetch-site": "same-origin",
+                            "x-requested-with": "XMLHttpRequest"
+                        },
+                        body: JSON.stringify({"data":JSON.stringify(newArray)}),
+                        method: "POST",
+                        mode:"no-cors"
+                    })
+                    .then(response => response.text())
+                    .then(data => alert("发送成功"))
+                    .catch(error => alert('Error:', error));
+                }
+            });
+
+            // 调用Completion以完成
+            completion();
+        });
 
 
 
